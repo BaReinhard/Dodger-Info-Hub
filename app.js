@@ -962,13 +962,24 @@ var returnedData = {
   ]
 };
 
-
-  const ACCESS_TOKEN = '7427d785-2f1a-4bc0-8d30-e994d1ba837e';
+function getCurrentTime(){
+  // Gets Current Time
+}
+  const ACCESS_TOKEN = '';
   const TEAM_ID = 'los-angeles-dodgers';
+  var curretTime = getCurrentTime();
   var currentDate =returnedData.events_date;
 for(let i =0;i<returnedData.event.length;i++){
-  let str = `${returnedData.event[i].home_team.team_id} versus ${returnedData.event[i].away_team.team_id}`;
-  console.log(str);
+  if(returnedData.event[i].home_team.team_id == TEAM_ID | returnedData.event[i].away_team.team_id == TEAM_ID){
+    let str = `${returnedData.event[i].home_team.team_id} versus ${returnedData.event[i].away_team.team_id}`;
+    console.log(str);
+    //Log Score
+    let homeScore = `${returnedData.event[i].home_team.team_id} has scored ${returnedData.event[i].home_points_scored} runs`;
+    let awayScore = `${returnedData.event[i].away_team.team_id} has scored ${returnedData.event[i].away_points_scored} runs`;
+    console.log(homeScore);
+    console.log(awayScore);
+  }
+
 }
 
 

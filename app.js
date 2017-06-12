@@ -981,6 +981,28 @@ for(let i =0;i<returnedData.event.length;i++){
   }
 
 }
+var https = require("https");
+
+var options = {
+host: 'api.github.com',
+path: '/users/bareinhard',
+method: 'GET',
+headers: {'user-agent': 'node.js'}
+
+};
+
+var request = https.request(options, function(response){
+var body = '';
+response.on("data", function(chunk){
+    body += chunk.toString('utf8');
+});
+
+response.on("end", function(){
+    console.log("Body: ", body);
+    });
+});
+
+request.end();
 
 
 })();

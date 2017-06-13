@@ -3,54 +3,78 @@
   'use strict';
 
   // Load Config
+  const PORT = 3000;
   const TEAM_ID = require('./config/teams').teams;
   const SPORT = require('./config/sports').mlb;
+  const express        = require('express');
+  const morgan         = require('morgan');
+  const bodyParser     = require('body-parser');
+  const methodOverride = require('method-override');
+  const app            = express();
 
-  function init(){
-    getTeamData();
-  }
 
 
-  function getTeamData (){
+
+
+
+
+  function getTeamData (date,success,error){
     //import {https} from 'https';
     // AJAX Variables
     const ACCESS_TOKEN = '';
+    let responseData;
     let https = require('https');
-    let options = {
-      host: 'https://erikberg.com',
-      path: `/events.json?sport=${SPORT}`,
-      headers: {
-        "Authorization" : `Bearer ${ACCESS_TOKEN}`
-      },
-      method: 'GET'
-    };
+    let options;
+    if (typeof(date) === typeof(undefined)){
+      options = {
+        host: 'https://erikberg.com',
+        path: `/events.json?sport=${SPORT}`,
+        headers: {
+          "Authorization" : `Bearer ${ACCESS_TOKEN}`
+        },
+        method: 'GET'
+      };
+    }
+    else{
+      options = {
+        host: 'https://erikberg.com',
+        path: `/events.json?sport=${SPORT}&date=${date}`,
+        headers: {
+          "Authorization" : `Bearer ${ACCESS_TOKEN}`
+        },
+        method: 'GET'
+      };
+    }
+    //console.log(options);
     let request = https.request(options, function(response){
-      console.log(response);
+      // When Finished
+      this.on("end", function(){
+        console.log("Done");
+
+        // Call Next Function
+      });
+      // Success CallBack
+      this.on("data", function(chunk){
+        //newData = chunk;
+        findGame(response,success);
+      });
+
+      // Error Handler
+      this.on("error",function(err){
+        console.log(err);
+        error();
+      });
     });
     request.end();
-
-    // When Finished
-    request.on("end", function(){
-      console.log("Done");
-
-      // Call Next Function
-    });
-
-
-
-    // Success CallBack
-    request.on("data", function(chunk){
-      //newData = chunk;
-      findGame(newData);
-    });
-
     // Error Handler
     request.on("error",function(err){
+      console.log(err);
+      error();
       // Remove this when not working behind proxy
-      err = newData;
-      findGame(err);
+      // findGame(newData,success);
     });
-    
+
+
   }
   // Parse Team ID Name
   function santizeTeam (string){
@@ -70,65 +94,145 @@
     date = date[0].split(':');
     if (date[0] > 12){
       date[0] = date[0]-12;
-      AMPM = 'PM'
+      AMPM = 'PM';
     }
     date = `${date[0]}:${date[1]} ${AMPM}`;
 
-    
+
 
     return date;
   }
 
 
   // Find Games Data
-   function findGame (returnedData){
-    var foundTeams = {};
-    let found = false;
+   function findGame (returnedData,callback){
+    let response = {};
+    response.requestedData = [];
+    let foundTeams = {};
+
+
+
     for(let i =0;i<returnedData.event.length;i++){
-      if( (TEAM_ID.includes(returnedData.event[i].home_team.team_id) || TEAM_ID.includes(returnedData.event[i].away_team.team_id)) && returnedData.event[i].event_status != "completed"){
-        // Store Found Teams
-        foundTeams[returnedData.event[i].home_team.team_id] = true;
-        foundTeams[returnedData.event[i].away_team.team_id] = true;
+      let homeTeam = {};
+      let awayTeam = {};
 
-        let str = `${santizeTeam(returnedData.event[i].home_team.team_id)} versus ${santizeTeam(returnedData.event[i].away_team.team_id)} at ${getGameTime(returnedData.event[i].start_date_time)}`;
-        console.log(str);
-      }
-      //Log Score
-      if(returnedData.event[i].event_status === "completed"){
+
+      requestedJSON.homeTeam = {};
+      requestedJSON.awayTeam = {};
+      if(TEAM_ID.includes(returnedData.event[i].home_team.team_id) || TEAM_ID.includes(returnedData.event[i].away_team.team_id)){
+        // Set Teams Boolean Value to determine to write to requestedJSON
+        foundTeams[returnedData.event[i].home_team.team_id] = TEAM_ID.includes(returnedData.event[i].home_team.team_id);
+        foundTeams[returnedData.event[i].away_team.team_id] = TEAM_ID.includes(returnedData.event[i].away_team.team_id);
+        homeTeam[returnedData.event[i].home_team.team_id] = TEAM_ID.includes(returnedData.event[i].home_team.team_id);
+        awayTeam[returnedData.event[i].away_team.team_id] = TEAM_ID.includes(returnedData.event[i].away_team.team_id);
+        let requestedJSON = {};
         let finalResult = '';
-        if(returnedData.event[i].home_points_scored > returnedData.event[i].away_points_scored){
+        let playString = '';
+        let homeTeamName = santizeTeam(returnedData.event[i].home_team.team_id);
+        let awayTeamName = santizeTeam(returnedData.event[i].away_team.team_id);
+        let gameTime = getGameTime(returnedData.event[i].start_date_time);
+        let homeScore = returnedData.event[i].home_points_scored;
+        let awayScore = returnedData.event[i].away_points_scored;
+        let stadiumName = returnedData.event[i].home_team.site_name;
+          // Store Found Teams
+          // If the Searched Team is the Home Team
+          if(homeTeam[returnedData.event[i].home_team.team_id] === true){
+            playString = `The ${homeTeamName} play the ${awayTeamName} at ${stadiumName} at ${gameTime}`;
+            if(returnedData.event[i].home_points_scored > returnedData.event[i].away_points_scored){
+              finalResult = `${homeTeamName} won against the ${awayTeamName} with a final score of ${homeScore} to ${awayScore}`;
+            }
+            else{
+              finalResult = `${homeTeamName} lost to the ${awayTeamName} with a final score of ${homeScore} to ${awayScore}`;
+            }
+          }
+          // If the Searched Team is the Away Team
+          else{
+            playString = `The ${awayTeamName} play the ${homeTeamName} at ${returnedData.event[i].home_team.site_name} at ${gameTime}`;
+            // If Away Team Won the game
+            if(returnedData.event[i].away_points_scored > returnedData.event[i].home_points_scored){
+              finalResult = `${awayTeamName} won against the ${homeTeamName} with a final score of ${returnedData.event[i].away_points_scored} to ${returnedData.event[i].home_points_scored}`;
+            }
+            // If Away Team lost the game
+            else{
+              finalResult = `${awayTeamName} lost to the ${homeTeamName} with a final score of ${returnedData.event[i].away_points_scored} to ${returnedData.event[i].home_points_scored}`;
+            }
+          }
 
-        finalResult = `${santizeTeam(returnedData.event[i].home_team.team_id)} won against the ${santizeTeam(returnedData.event[i].away_team.team_id)} with a final score of ${returnedData.event[i].home_points_scored} to ${returnedData.event[i].away_points_scored}`;
-        
-      }else{
 
-        finalResult = `${santizeTeam(returnedData.event[i].away_team.team_id)} won against the ${santizeTeam(returnedData.event[i].home_team.team_id)} with a final score of ${returnedData.event[i].away_points_scored} to ${returnedData.event[i].home_points_scored}`;
-        
-      }
-      console.log(finalResult);
-        
-        
-      }
-      
+
+
+
+
+
+
+        // Write to JSON
+        requestedJSON.homeTeam.name = homeTeamName;
+        requestedJSON.homeTeam.id = returnedData.event[i].home_team.team_id;
+        requestedJSON.awayTeam.name = awayTeamName;
+        requestedJSON.awayTeam.id = returnedData.event[i].away_team.team_id;
+        requestedJSON.gameTime = gameTime;
+        requestedJSON.resultString = finalResult;
+        requestedJSON.playString = playString;
+        response.requestedData.push(requestedJSON);
+    }
 
     }
-    
+
+
+
     // Find Teams Not Playing if any
-    
+
     if(Object.keys(foundTeams).length !== 0){
+      response.notPlaying = [];
       for(let i = 0;i<TEAM_ID.length;i++){
-
         if(!foundTeams[TEAM_ID[i]]){
-
-      console.log(`${santizeTeam(TEAM_ID[i])} are not playing today`);
+          console.log(`${santizeTeam(TEAM_ID[i])} are not playing today`);
+          response.notPlaying.push(santizeTeam(TEAM_ID[i]));
         }
     }
-    } 
-  } 
+    }
+    // Call Passed Call Back
+
+    callback(response);
+
+
+  }
+
+  function init(){
+
+    app.use(express.static(__dirname + '/public'));         // set the static files location /public/img will be /img for users
+    app.use(morgan('dev'));                                         // log every request to the console
+    app.use(bodyParser());                                          // pull information from html in POST
+    app.use(methodOverride());
+    app.get('/api/teamdata',function(req,res){
+
+      getTeamData(undefined,function(response){
+        res.status(200);
+        res.json(response);
+      },function(err){
+        res.status(502);
+        res.end();
+      });
+    });
+    app.get('/api/teamdata/:date',function(req,res){
+      getTeamData(req.params.date,function(response){
+        res.status(200);
+        res.json(response);
+      },function(err){
+        res.status(502);
+        res.end();
+      });
+    });
+    app.listen(PORT);
+
+    //getTeamData();
+  }
 
   // Execute Functions
+init();
 
-  init();
+
+
 
 
 

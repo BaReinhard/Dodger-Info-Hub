@@ -14,7 +14,7 @@
   function getTeamData (){
     //import {https} from 'https';
     // AJAX Variables
-    const ACCESS_TOKEN = '7427d785-2f1a-4bc0-8d30-e994d1ba837e';
+    const ACCESS_TOKEN = '';
     let https = require('https');
     let options = {
       host: 'https://erikberg.com',

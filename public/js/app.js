@@ -1,16 +1,23 @@
+(function () {
+    'use strict';
 
-  'use strict';
-  var app = angular.module('DodgersApp', ['ngRoute', 'ngAnimate']);
+    angular.module('DodgersApp', [
+        // Angular modules
+        'ngRoute'
 
-  // Routes
-  app.config(function ($routeProvider) {
-      $routeProvider
+        // Custom modules
 
-          .when('/', {
-              templateUrl: 'views/home.html',
-              controller: 'HomeController'
-          })
+        // 3rd Party Modules
+
+    ]).config(function ($routeProvider) {
+        $routeProvider
+
+            .when('/', {
+                templateUrl: 'views/home.html',
+                controller: 'HomeController'
+            })
 
 
-          .otherwise({ redirectTo: '/' });
-  });
+            .otherwise({ redirectTo: '/' });
+    });
+})();

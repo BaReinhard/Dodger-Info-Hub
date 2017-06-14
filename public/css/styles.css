@@ -1,0 +1,49 @@
+html{
+  height: 100vh;
+  }
+  .date{
+    display:block;
+    font-size:40px;
+    right: 10%;
+  }
+  .view{
+    font-family: 'Russo One';
+  background-image: url(http://www.discoverlosangeles.com/sites/default/files/styles/article_image/public/media/Sports/dodger-stadium-sunset.jpg?itok=z4pXHzmI);
+  background-attachment: fixed ;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  	height:100vh;
+    z-index: -1;
+    overflow: hidden;
+}
+.title{
+  color:white;
+  font-size: 100px;
+  text-align: center;
+  margin: 30px auto;
+  background-color:rbga(255,255,255,1);
+}
+.home{
+  left:0;
+  right:0;
+  padding : 0;
+  top:50vh;
+  width: 100vw;
+  height:50vh;
+  top:25%;
+  position: fixed;
+  text-align: center;
+  background-color: rgba(255,255,255,0.5);
+}
+.container{
+  display: inline-flex;  // <-- This is responsible for vertical alignment
+  padding: 0!important;
+width: 100vw;
+top:0;
+
+}

@@ -14,7 +14,11 @@
           $scope.checkDate = changeDate(0);
           $scope.currentDate = changeDate(0);
           $scope.lastIncrement = 0;
-
+          $scope.tableHeader = ['','1st','2nd','3rd','4th','5th','6th','7th','8th','9th','R','H','E'];
+          $scope.scoreBoardAway = [];
+          $scope.scoreBoardHome = [];
+          $scope.homeSummary = {};
+          $scope.awaySummary = {};
           $scope.getNewDate =function(increment){
 
             $scope.currentDate=changeDate(increment);
@@ -36,6 +40,24 @@
           $scope.prettyDate = function(date){
             return `${date.substring(5,6)}/${date.substring(6,8)}/${date.substring(0,4)}`;
           };
+          function createTable(){
+              $scope.tableHeader = [];
+              $scope.tableHeader.push('');
+              for(let i = 0;i<$scope.gamesPlaying.homeTeam.innings.length;i++){
+               $scope.tableHeader.push(i+1);
+               $scope.scoreBoardAway.push($scope.gamesPlaying.awayTeam.innings[i]);
+               $scope.scoreBoardHome.push($scope.gamesPlaying.homeTeam.innings[i]);
+              }
+              $scope.tableHeader.push('R');
+              $scope.scoreBoardAway.push("Runs");
+              $scope.scoreBoardHome.push("Runs");
+              $scope.tableHeader.push('H');
+              $scope.scoreBoardAway.push("Hits");
+              $scope.scoreBoardHome.push("Hits");
+              $scope.tableHeader.push('E');
+              $scope.scoreBoardAway.push("Errors");
+              $scope.scoreBoardHome.push("Errors");
+          }
           function init(){
             $http.get('/api/teamdata').then(function(response){
               console.log(response.data);
@@ -45,6 +67,7 @@
               if($scope.games.playing.length !== 0){
                 $scope.currentGame = $scope.gamesPlaying[$scope.currentGameNumber];
                 $scope.currentGameCompleted = $scope.currentGame.completed;
+                createTable();
               }else{
                 $timeout(getNextGame,10000);
               }

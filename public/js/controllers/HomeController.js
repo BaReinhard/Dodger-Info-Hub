@@ -43,10 +43,13 @@
           function createTable(){
               $scope.tableHeader = [];
               $scope.tableHeader.push('');
-              for(let i = 0;i<$scope.gamesPlaying.homeTeam.innings.length;i++){
-               $scope.tableHeader.push(i+1);
-               $scope.scoreBoardAway.push($scope.gamesPlaying.awayTeam.innings[i]);
-               $scope.scoreBoardHome.push($scope.gamesPlaying.homeTeam.innings[i]);
+              console.log($scope.currentGame);
+              $scope.scoreBoardAway.push($scope.currentGame.awayTeam.name);
+              $scope.scoreBoardHome.push($scope.currentGame.homeTeam.name);
+              for(let i = 0;i<$scope.currentGame.homeTeam.score.length;i++){
+               $scope.tableHeader.push(parseInt(i)+1);
+               $scope.scoreBoardAway.push($scope.currentGame.awayTeam.score[i]);
+               $scope.scoreBoardHome.push($scope.currentGame.homeTeam.score[i]);
               }
               $scope.tableHeader.push('R');
               $scope.scoreBoardAway.push("Runs");

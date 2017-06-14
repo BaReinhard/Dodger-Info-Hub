@@ -23,56 +23,51 @@
     // AJAX Variables
     const ACCESS_TOKEN = '';
     let responseData;
-    let https = require('https');
+    let https = require('request');
     let options;
     if (typeof(date) === typeof(undefined)){
       options = {
-        host: 'https://erikberg.com',
-        path: `/events.json?sport=${SPORT}`,
+        url: 'https://erikberg.com/events.json?sport=mlb',
         headers: {
-          "Authorization" : `Bearer ${ACCESS_TOKEN}`
+          "Authorization" : "Bearer 7427d785-2f1a-4bc0-8d30-e994d1ba837e",
+          'User-Agent' : 'node'
         },
-        method: 'GET'
+        method:'GET'
       };
     }
     else{
       options = {
-        host: 'https://erikberg.com',
+        host: 'erikberg.com',
         path: `/events.json?sport=${SPORT}&date=${date}`,
         headers: {
           "Authorization" : `Bearer ${ACCESS_TOKEN}`
         },
-        method: 'GET'
+        port:443
       };
     }
     //console.log(options);
-    let request = https.request(options, function(response){
-      // When Finished
-      this.on("end", function(){
-        console.log("Done");
+    https.get(options, function(e,response,body){
 
-        // Call Next Function
-      });
-      // Success CallBack
-      this.on("data", function(chunk){
-        //newData = chunk;
-        findGame(response,success);
-      });
+      findGame(JSON.parse(body),success);
+
+      // When Finished
+
 
       // Error Handler
-      this.on("error",function(err){
-        console.log(err);
-        error();
-      });
+
     });
-    request.end();
-    // Error Handler
-    request.on("error",function(err){
-      console.log(err);
-      error();
+
+
+      // Call Next Function
+
       // Remove this when not working behind proxy
       // findGame(newData,success);
-    });
+
+    // Success CallBack
+
+    // Error Handler
+
+
 
 
   }
@@ -111,14 +106,12 @@
     let foundTeams = {};
 
 
-
     for(let i =0;i<returnedData.event.length;i++){
       let homeTeam = {};
       let awayTeam = {};
 
 
-      requestedJSON.homeTeam = {};
-      requestedJSON.awayTeam = {};
+
       if(TEAM_ID.includes(returnedData.event[i].home_team.team_id) || TEAM_ID.includes(returnedData.event[i].away_team.team_id)){
         // Set Teams Boolean Value to determine to write to requestedJSON
         foundTeams[returnedData.event[i].home_team.team_id] = TEAM_ID.includes(returnedData.event[i].home_team.team_id);
@@ -126,6 +119,9 @@
         homeTeam[returnedData.event[i].home_team.team_id] = TEAM_ID.includes(returnedData.event[i].home_team.team_id);
         awayTeam[returnedData.event[i].away_team.team_id] = TEAM_ID.includes(returnedData.event[i].away_team.team_id);
         let requestedJSON = {};
+        requestedJSON.homeTeam = {};
+        requestedJSON.awayTeam = {};
+
         let finalResult = '';
         let playString = '';
         let homeTeamName = santizeTeam(returnedData.event[i].home_team.team_id);
@@ -168,8 +164,10 @@
         // Write to JSON
         requestedJSON.homeTeam.name = homeTeamName;
         requestedJSON.homeTeam.id = returnedData.event[i].home_team.team_id;
+        requestedJSON.homeTeam.score = returnedData.event[i].home_period_scores;
         requestedJSON.awayTeam.name = awayTeamName;
         requestedJSON.awayTeam.id = returnedData.event[i].away_team.team_id;
+        requestedJSON.awayTeam.score = returnedData.event[i].away_period_scores;
         requestedJSON.gameTime = gameTime;
         requestedJSON.resultString = finalResult;
         requestedJSON.playString = playString;
@@ -186,7 +184,7 @@
       response.notPlaying = [];
       for(let i = 0;i<TEAM_ID.length;i++){
         if(!foundTeams[TEAM_ID[i]]){
-          console.log(`${santizeTeam(TEAM_ID[i])} are not playing today`);
+          //console.log(`${santizeTeam(TEAM_ID[i])} are not playing today`);
           response.notPlaying.push(santizeTeam(TEAM_ID[i]));
         }
     }

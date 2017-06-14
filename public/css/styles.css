@@ -6,9 +6,19 @@ html{
     font-size:40px;
     right: 10%;
   }
+  .loading{
+    top: 40%;
+    position: fixed;
+    left:0;
+    right:0;
+    margin: 0 auto;
+  }
+  .onLoad{
+    color:
+  }
   .view{
     font-family: 'Russo One';
-  background-image: url(http://www.discoverlosangeles.com/sites/default/files/styles/article_image/public/media/Sports/dodger-stadium-sunset.jpg?itok=z4pXHzmI);
+  background-image: url("https://cdn.vox-cdn.com/uploads/chorus_image/image/48156639/03_2013_DODGER_STADIUM.0.0.jpg");
   background-attachment: fixed ;
       background-position: center;
       background-repeat: no-repeat;
@@ -21,12 +31,69 @@ html{
     z-index: -1;
     overflow: hidden;
 }
+
+.boxScore{
+  position: fixed;
+  top:40%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+.awayTeam{
+  position: fixed;
+  right:10%;
+  top:30%;
+  font-size: 30px;
+  color: #000;
+  text-align: center;
+
+}
+.homeTitle{
+  position: fixed;
+  width:250px;
+  height:125px;
+  left:175px;
+  top:220px;
+  background-image: url('../img/los-angeles-dodgers-title.png');
+  background-position: center;
+  background-size:contain;
+  background-repeat: no-repeat;
+
+}
+.homeImage{
+  position: fixed;
+  left:15%;
+  bottom:30%;
+  background-image: url('../img/los-angeles-dodgers.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width:200px;
+  height: 200px;
+}
+.homeTeam{
+  position: fixed;
+  left:10%;
+  top:30%;
+  font-size: 30px;
+  color: #000;
+  text-align: center;
+}
 .title{
   color:white;
   font-size: 100px;
   text-align: center;
   margin: 30px auto;
   background-color:rbga(255,255,255,1);
+}
+.gameTime{
+  font-size:40px;
+  color:white;
+  position: fixed;
+  top:30%;
+  left:0;
+  right:0;
+  margin:0 auto;
 }
 .home{
   left:0;
@@ -43,7 +110,10 @@ html{
 .container{
   display: inline-flex;  // <-- This is responsible for vertical alignment
   padding: 0!important;
-width: 100vw;
-top:0;
+  width: 100vw;
+  top:0;
 
+}
+.innings{
+  font-size: 55px;
 }

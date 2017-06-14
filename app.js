@@ -47,25 +47,17 @@
     }
     //console.log(options);
     https.get(options, function(e,response,body){
+      if(e){
+        findGame(newData,success);
+      }
+      //findGame(JSON.parse(body),success);
 
-      findGame(JSON.parse(body),success);
 
-      // When Finished
-
-
-      // Error Handler
 
     });
 
 
-      // Call Next Function
 
-      // Remove this when not working behind proxy
-      // findGame(newData,success);
-
-    // Success CallBack
-
-    // Error Handler
 
 
 
@@ -102,7 +94,8 @@
   // Find Games Data
    function findGame (returnedData,callback){
     let response = {};
-    response.requestedData = [];
+    response.playing = [];
+    response.notPlaying = [];
     let foundTeams = {};
 
 
@@ -121,7 +114,6 @@
         let requestedJSON = {};
         requestedJSON.homeTeam = {};
         requestedJSON.awayTeam = {};
-
         let finalResult = '';
         let playString = '';
         let homeTeamName = santizeTeam(returnedData.event[i].home_team.team_id);
@@ -145,12 +137,12 @@
           else{
             playString = `The ${awayTeamName} play the ${homeTeamName} at ${returnedData.event[i].home_team.site_name} at ${gameTime}`;
             // If Away Team Won the game
-            if(returnedData.event[i].away_points_scored > returnedData.event[i].home_points_scored){
-              finalResult = `${awayTeamName} won against the ${homeTeamName} with a final score of ${returnedData.event[i].away_points_scored} to ${returnedData.event[i].home_points_scored}`;
+            if(awayScore > homeScore){
+              finalResult = `${awayTeamName} won against the ${homeTeamName} with a final score of ${awayScore} to ${homeScore}`;
             }
             // If Away Team lost the game
             else{
-              finalResult = `${awayTeamName} lost to the ${homeTeamName} with a final score of ${returnedData.event[i].away_points_scored} to ${returnedData.event[i].home_points_scored}`;
+              finalResult = `${awayTeamName} lost to the ${homeTeamName} with a final score of ${awayScore} to ${homeScore}`;
             }
           }
 
@@ -162,16 +154,22 @@
 
 
         // Write to JSON
+        requestedJSON.completed = returnedData.event[i].event_status === "completed";
+        requestedJSON.stadium = returnedData.event[i].home_team.site_name;
+        requestedJSON.winner = homeScore > awayScore && homeTeamName || awayScore > homeScore && awayTeamName;
+        requestedJSON.loser = homeScore < awayScore && homeTeamName || awayScore < homeScore && awayTeamName;
         requestedJSON.homeTeam.name = homeTeamName;
         requestedJSON.homeTeam.id = returnedData.event[i].home_team.team_id;
         requestedJSON.homeTeam.score = returnedData.event[i].home_period_scores;
+        requestedJSON.homeTeam.finalScore = returnedData.event[i].home_points_scored;
         requestedJSON.awayTeam.name = awayTeamName;
         requestedJSON.awayTeam.id = returnedData.event[i].away_team.team_id;
         requestedJSON.awayTeam.score = returnedData.event[i].away_period_scores;
+        requestedJSON.awayTeam.finalScore = returnedData.event[i].away_points_scored;
         requestedJSON.gameTime = gameTime;
         requestedJSON.resultString = finalResult;
         requestedJSON.playString = playString;
-        response.requestedData.push(requestedJSON);
+        response.playing.push(requestedJSON);
     }
 
     }
@@ -180,15 +178,14 @@
 
     // Find Teams Not Playing if any
 
-    if(Object.keys(foundTeams).length !== 0){
-      response.notPlaying = [];
+
       for(let i = 0;i<TEAM_ID.length;i++){
         if(!foundTeams[TEAM_ID[i]]){
           //console.log(`${santizeTeam(TEAM_ID[i])} are not playing today`);
           response.notPlaying.push(santizeTeam(TEAM_ID[i]));
         }
     }
-    }
+
     // Call Passed Call Back
 
     callback(response);
@@ -243,7 +240,7 @@ const newData ={
     "event": [
         {
             "event_id": "20170611-baltimore-orioles-at-new-york-yankees",
-            "event_status": "completed",
+            "event_status": "scheduled",
             "sport": "MLB",
             "start_date_time": "2017-06-11T13:05:00-04:00",
             "season_type": "regular",
@@ -307,7 +304,7 @@ const newData ={
         },
         {
             "event_id": "20170611-oakland-athletics-at-tampa-bay-rays",
-            "event_status": "completed",
+            "event_status": "scheduled",
             "sport": "MLB",
             "start_date_time": "2017-06-11T13:10:00-04:00",
             "season_type": "regular",
@@ -371,7 +368,7 @@ const newData ={
         },
         {
             "event_id": "20170611-chicago-white-sox-at-cleveland-indians",
-            "event_status": "completed",
+            "event_status": "scheduled",
             "sport": "MLB",
             "start_date_time": "2017-06-11T13:10:00-04:00",
             "season_type": "regular",
@@ -563,7 +560,7 @@ const newData ={
         },
         {
             "event_id": "20170611-los-angeles-angels-at-houston-astros",
-            "event_status": "completed",
+            "event_status": "scheduled",
             "sport": "MLB",
             "start_date_time": "2017-06-11T14:10:00-04:00",
             "season_type": "regular",

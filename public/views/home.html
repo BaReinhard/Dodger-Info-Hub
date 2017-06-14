@@ -9,15 +9,7 @@
         <div class="game" ng-if="currentGame" >
           <div class="gameName">
             <span class="gameTime">{{currentGame.gameTime}}</span>
-            <div class="awayTeam">
-                {{currentGame.awayTeam.name}}<br />
-                {{currentGame.awayTeam.finalScore}}
-            </div>
-            <div class="homeTeam">
-              <br />
-                <br />
-                {{currentGame.homeTeam.finalScore}}
-            </div>
+
 <div class="homeImage">
 </div>
 <div class="homeTitle"></div>
@@ -25,22 +17,8 @@
           </div>
           <div ng-if="currentGame.completed">
             <div class="innings">
-              <div class="eachInning" ng-if="false">
-                <span ng-repeat="a in currentGame.awayTeam.score track by $index">
-                    {{$index+1}}
-                </span>
-              </div>
-              <div class="awayTeamInnings">
-                <span ng-repeat="a in currentGame.awayTeam.score track by $index">
-                    {{a}}
-                </span>
-              </div>
-              <div class="homeTeamInnings">
-                <span ng-repeat="h in currentGame.homeTeam.score track by $index">
-                    <span ng-if="h != -1">{{h}}</span>
-                    <span ng-if="h == -1">X</span>
-                </span>
-              </div>
+
+              <!-- Place  Table with Score -->
 
             </div>
           </div>

@@ -1,3 +1,93 @@
-<div class="home">
-  This is the Home View
+<div class="container" style="padding:0;top:0;margin-top:0;">
+  <span class='title'>Los Angeles Dodgers<span class='date'>{{prettyDate(currentDate)}}</span>
+  </span>
+
+  <div class="home">
+    <div class='onLoad' ng-if="!Loading&&games.notPlaying.length===0">
+      <div class='btn-container' ng-click="clicked()">
+
+        <div class="btn btn-default" ng-click="prevGame(1)" ng-if="currentGameNumber>0">
+          Previous
+        </div>
+        <div class="btn btn-default" ng-click="nextGame(1)" ng-if="currentGameNumber<gamesPlaying.length-1">
+            Next
+        </div>
+      </div>
+      <div class="game" ng-if="currentGame" >
+        <div class="gameName">
+          {{currentGame.gameTime}}
+          <div class="awayTeam">
+              {{currentGame.awayTeam.name}}
+          </div>
+          vs
+          <div class="homeTeam">
+              {{currentGame.homeTeam.name}}
+          </div>
+
+
+        </div>
+        <div ng-if="currentGame.completed">
+          <div class="gameScore">
+            <div class="awayTeamScore">
+                {{currentGame.awayTeam.name}} - {{currentGame.awayTeam.finalScore}}
+            </div>
+            <div class="homeTeamScore">
+                {{currentGame.homeTeam.name}} - {{currentGame.homeTeam.finalScore}}
+            </div>
+
+          </div>
+          <div class="innings">
+            <div class="awayTeamInnings">
+              <span ng-repeat="a in currentGame.awayTeam.score track by $index">
+                  {{a}}
+              </span>
+            </div>
+            <div class="homeTeamInnings">
+              <span ng-repeat="h in currentGame.homeTeam.score track by $index">
+                  <span ng-if="h != -1">{{h}}</span>
+                  <span ng-if="h == -1">X</span>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Not Playing Today -->
+  <div class="notPlaying">
+    Unfortunately, the {{games.notPlaying[0]}} are not playing today.
+  </div>
+  <!-- Modal Boxes -->
+  <div class="loading" ng-if="Loading">
+    <div class="loading-img">
+      <div class="loader loader--style5" title="4">
+    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+       width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+      <rect x="0" y="0" width="4" height="10" fill="#333">
+        <animateTransform attributeType="xml"
+          attributeName="transform" type="translate"
+          values="0 0; 0 20; 0 0"
+          begin="0" dur="0.6s" repeatCount="indefinite" />
+      </rect>
+      <rect x="10" y="0" width="4" height="10" fill="#333">
+        <animateTransform attributeType="xml"
+          attributeName="transform" type="translate"
+          values="0 0; 0 20; 0 0"
+          begin="0.2s" dur="0.6s" repeatCount="indefinite" />
+      </rect>
+      <rect x="20" y="0" width="4" height="10" fill="#333">
+        <animateTransform attributeType="xml"
+          attributeName="transform" type="translate"
+          values="0 0; 0 20; 0 0"
+          begin="0.4s" dur="0.6s" repeatCount="indefinite" />
+      </rect>
+    </svg>
+  </div>
+    </div>
+
+  </div>
+
+  </div>
+
 </div>

@@ -80,12 +80,12 @@
 
 
 <!-- Template For Score Board -->
-<div class="scoreBoard">
+<div class="scoreBoard" style="width:50%;">
   <table class="table table-hover table-inverse">
   <thead>
     <tr>
-      <th ng-repeat="h in tableHeader track by $index">#</th>
-        {{h}}
+      <td ng-repeat="h in tableHeader track by $index">{{h}}</td>
+
     </tr>
   </thead>
   <tbody>
@@ -101,5 +101,5 @@
     </tr>
   </tbody>
 </table>
-  
+
 </div>

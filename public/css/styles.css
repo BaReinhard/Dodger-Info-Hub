@@ -3,9 +3,10 @@ html{
   }
   .date{
     display:block;
-    font-size:40px;
+    font-size:4.5vh;
     right: 10%;
   }
+
   .loading{
     top: 40%;
     position: fixed;
@@ -31,13 +32,43 @@ html{
     z-index: -1;
     overflow: hidden;
 }
+.gameName img{
+  height: 75px;
+  width: 150px;
+  margin-top:-50px;
+}
+.awayTeamTitle img{
+  float:right;
+  z-index: -1;
+}
+.homeTeamTitle img{
+  float:left;
+  z-index: -1;
+}
+.scoreBoard{
+  margin: 0 auto;
+  width: 75%;
+}
+.scoreBoard table{
+  margin: 30px auto 0 auto;
+  width: 75%;
 
+  font-size: 3vh;
+}
+.homeTeamLeft, .awayTeamLeft{
+  float: left;
+  text-align: left!important;
+}
 .boxScore{
   position: fixed;
   top:40%;
   left: 0;
   right: 0;
   margin: 0 auto;
+
+}
+.table-inverse{
+  color: black;
 }
 .awayTeam{
   position: fixed;
@@ -81,13 +112,13 @@ html{
 }
 .title{
   color:white;
-  font-size: 100px;
+  font-size: 5vh;
   text-align: center;
   margin: 30px auto;
   background-color:rbga(255,255,255,1);
 }
 .gameTime{
-  font-size:40px;
+  font-size:4.5vh;
   color:white;
   position: fixed;
   top:30%;

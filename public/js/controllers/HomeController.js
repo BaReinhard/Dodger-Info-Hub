@@ -12,7 +12,7 @@
           $scope.Reset = false;
           $scope.todaysDate = changeDate(0);
           $scope.checkDate = changeDate(0);
-          $scope.currentDate = changeDate(0);
+          $scope.currentDate = changeDate(-1);
           $scope.lastIncrement = 0;
           $scope.tableHeader = ['','1st','2nd','3rd','4th','5th','6th','7th','8th','9th','R','H','E'];
           $scope.scoreBoardAway = [];
@@ -49,20 +49,26 @@
               for(let i = 0;i<$scope.currentGame.homeTeam.score.length;i++){
                $scope.tableHeader.push(parseInt(i)+1);
                $scope.scoreBoardAway.push($scope.currentGame.awayTeam.score[i]);
-               $scope.scoreBoardHome.push($scope.currentGame.homeTeam.score[i]);
+               if($scope.currentGame.homeTeam.score[i] === -1){
+                 $scope.scoreBoardHome.push('X');
+               }
+               else{
+                 $scope.scoreBoardHome.push($scope.currentGame.homeTeam.score[i]);
+               }
+
               }
               $scope.tableHeader.push('R');
-              $scope.scoreBoardAway.push("Runs");
-              $scope.scoreBoardHome.push("Runs");
+              $scope.scoreBoardAway.push("88");
+              $scope.scoreBoardHome.push("88");
               $scope.tableHeader.push('H');
-              $scope.scoreBoardAway.push("Hits");
-              $scope.scoreBoardHome.push("Hits");
+              $scope.scoreBoardAway.push("88");
+              $scope.scoreBoardHome.push("88");
               $scope.tableHeader.push('E');
-              $scope.scoreBoardAway.push("Errors");
-              $scope.scoreBoardHome.push("Errors");
+              $scope.scoreBoardAway.push("88");
+              $scope.scoreBoardHome.push("88");
           }
           function init(){
-            $http.get('/api/teamdata').then(function(response){
+            $http.get('/api/teamdata/'+$scope.currentDate).then(function(response){
               console.log(response.data);
               $scope.games = response.data;
               $scope.gamesPlaying = $scope.games.playing;

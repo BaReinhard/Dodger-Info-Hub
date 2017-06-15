@@ -5,20 +5,50 @@
   <div class="home">
     <div class="boxScore">
       <div class='onLoad' ng-if="!Loading&&games.notPlaying.length===0">
-
         <div class="game" ng-if="currentGame" >
           <div class="gameName">
-            <span class="gameTime">{{currentGame.gameTime}}</span>
+            <!-- Template For Home Team -->
+            <div class="col-md-6">
+              <div class="homeTeamHolder">
+                <div class="homeTeamTitle">
+                  <img ng-src="/../img/{{currentGame.homeTeam.id}}.png"/>
+                </div>
+              </div>
+            </div>
 
-<div class="homeImage">
-</div>
-<div class="homeTitle"></div>
-
-          </div>
-          <div ng-if="currentGame.completed">
+            <!-- Template For Away Team -->
+            <div class="col-md-6">
+              <div class="awayTeamHolder">
+                <div class="awayTeamTitle">
+                  <img ng-src="/../img/{{currentGame.awayTeam.id}}.png"/>
+                </div>
+              </div>
+            </div>
+            <span class="gameTime">Game Starts at {{currentGame.gameTime}} PST</span>
+            <div ng-if="currentGame.completed">
             <div class="innings">
-
-              <!-- Place  Table with Score -->
+              <!-- Template For Score Board -->
+              <div class="scoreBoard" >
+                  <table class="table table-hover table-inverse">
+                    <thead>
+                      <tr>
+                        <td ng-repeat="h in tableHeader track by $index">{{h}}</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td ng-repeat="a in scoreBoardAway track by $index">
+                          <span ng-class="{homeTeamLeft: $index == 0}" >{{a}}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td ng-repeat="home in scoreBoardHome track by $index">
+                          <span ng-class="{awayTeamLeft: $index == 0}">{{home}}</span>
+                       </th>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
 
             </div>
           </div>
@@ -27,9 +57,7 @@
     </div>
 
   <!-- Not Playing Today -->
-  <div class="notPlaying" ng-if='!Loading &&games.playing.length===0'>
-    Unfortunately, the {{games.notPlaying[0]}} are not playing today.
-  </div>
+
   <!-- Modal Boxes -->
   <div class="loading" ng-if="Loading">
     <div class="loading-img">
@@ -65,41 +93,10 @@
 </div>
 
 
-<!-- Template For Home Team -->
-<div class="homeTeamHolder">
-  <div class="homeTeamTitle">
-    <img ng-src="/../img/{{currentGame.homeTeam.id}}-title.png"/>
-  </div>
-  <div class="homeTeamScore">
-    {{currentGame.homeTeam.finalScore}}
-  </div>
-  <div class="homeTeamLogo">
-    <img ng-src="/../img/{{currentGame.homeTeam.id}}.png"/>
-  </div>
-</div>
 
 
-<!-- Template For Score Board -->
-<div class="scoreBoard" style="width:50%;">
-  <table class="table table-hover table-inverse">
-  <thead>
-    <tr>
-      <td ng-repeat="h in tableHeader track by $index">{{h}}</td>
 
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td ng-repeat="a in scoreBoardAway track by $index">
-        {{a}}
-      </td>
-    </tr>
-    <tr>
-      <td ng-repeat="home in scoreBoardHome track by $index">
-        {{home}}
-     </th>
-    </tr>
-  </tbody>
-</table>
 
+<div class="notPlaying" ng-if='!Loading &&games.playing.length===0'>
+  Unfortunately, the {{games.notPlaying[0]}} are not playing today.
 </div>

@@ -50,7 +50,8 @@
       if(e){
         findGame(newData,success);
       }
-      //findGame(JSON.parse(body),success);
+
+      findGame(JSON.parse(body),success);
 
 
 

@@ -29,7 +29,7 @@
       options = {
         url: 'https://erikberg.com/events.json?sport=mlb',
         headers: {
-          "Authorization" : "Bearer 7427d785-2f1a-4bc0-8d30-e994d1ba837e",
+          "Authorization" : `Bearer ${ACCESS_TOKEN}`,
           'User-Agent' : 'node'
         },
         method:'GET'
@@ -37,10 +37,10 @@
     }
     else{
       options = {
-        host: 'erikberg.com',
-        path: `/events.json?sport=${SPORT}&date=${date}`,
+        url: 'https://erikberg.com/events.json?sport=mlb',
         headers: {
-          "Authorization" : `Bearer ${ACCESS_TOKEN}`
+          "Authorization" : `Bearer ${ACCESS_TOKEN}`,
+          'User-Agent' : 'node'
         },
         port:443
       };

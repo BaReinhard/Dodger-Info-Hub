@@ -106,8 +106,8 @@
 
           }
           function changeDate(number){
-            let retrievedDate = new Date();
-            retrievedDate.setDate(retrievedDate.getDate()+number);
+            let retrievedDate = new Date("6/11/2017");
+            retrievedDate.setDate(retrievedDate.getDate());
             retrievedDate = retrievedDate.toISOString().split('T')[0].split('-');
             retrievedDate = retrievedDate[0]+retrievedDate[1]+retrievedDate[2];
             console.log(retrievedDate);

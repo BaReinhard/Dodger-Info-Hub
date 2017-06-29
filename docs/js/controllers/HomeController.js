@@ -143,6 +143,8 @@
 
 
 const data = {
+    notPlaying:[],
+    playing:[{
   "awayTeam":{
     "finalScore":7,
     "id":"cincinnati-reds",
@@ -182,7 +184,6 @@ const data = {
   "resultString":"Los Angeles Dodgers won against the Cincinnati Reds with a final score of 9 to 7",
   "stadium":"Dodger Stadium",
   "winner": "Los Angeles Dodgers"
-}
-;
+}]};
 
 })();

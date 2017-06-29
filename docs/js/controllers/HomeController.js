@@ -68,9 +68,9 @@
               $scope.scoreBoardHome.push("88");
           }
           function init(){
-            $http.get('/api/teamdata/'+$scope.currentDate).then(function(response){
-              console.log(response.data);
-              $scope.games = response.data;
+            $timeout(function(){
+              console.log(data);
+              $scope.games = data;
               $scope.gamesPlaying = $scope.games.playing;
               console.log($scope.currentGameNumber);
               if($scope.games.playing.length !== 0){
@@ -83,7 +83,7 @@
 
               $scope.Loading = false;
 
-            });
+            },3000);
           }
 
           function getNextGame(){

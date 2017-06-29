@@ -148,15 +148,15 @@ const data = {
     "id":"cincinnati-reds",
     "name":"Cincinnati Reds",
     "score" : [
-    "0": 0,
-    "1": 3,
-    "2":1,
-    "3":0,
-    "4":0,
-    "5":3,
-    "6":0,
-    "7":0,
-    "8":0
+     0,
+    3,
+    1,
+    0,
+    0,
+    3,
+    0,
+    0,
+    0
     ]
   },
   "completed":true,
@@ -166,15 +166,15 @@ const data = {
     "id":"los-angeles-dodgers",
     "name":"Los Angeles Dodgers",
     "score" : [
-    "0": 0,
-    "1": 2,
-    "2":0,
-    "3":0,
-    "4":1,
-    "5":0,
-    "6":0,
-    "7":6,
-    "8":-1
+     0,
+     2,
+    0,
+    0,
+    1,
+    0,
+    0,
+    6,
+    -1
     ]
   },
   "loser":"Cincinnati Reds",
@@ -182,6 +182,7 @@ const data = {
   "resultString":"Los Angeles Dodgers won against the Cincinnati Reds with a final score of 9 to 7",
   "stadium":"Dodger Stadium",
   "winner": "Los Angeles Dodgers"
-};
+}
+;
 
 })();

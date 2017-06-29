@@ -25,8 +25,8 @@
 
             $scope.Loading = true;
             console.log($scope.currentDate);
-            $http.get('/api/teamdata/'+$scope.currentDate).then(function(response){
-              $scope.games = response.data;
+            $timeout(function(){
+              $scope.games = data;
               $scope.gamesPlaying = $scope.games.playing;
               if($scope.games.playing.length !== 0){
                 $scope.currentGame = $scope.gamesPlaying[$scope.currentGameNumber];
@@ -34,7 +34,7 @@
               }
 
               $scope.Loading = false;
-              console.log(response);
+              console.log(data);
             });
           };
           $scope.prettyDate = function(date){
@@ -142,5 +142,46 @@
         }]);
 
 
+const data = {
+  "awayTeam":{
+    "finalScore":7,
+    "id":"cincinnati-reds",
+    "name":"Cincinnati Reds",
+    "score" : [
+    "0": 0,
+    "1": 3,
+    "2":1,
+    "3":0,
+    "4":0,
+    "5":3,
+    "6":0,
+    "7":0,
+    "8":0
+    ]
+  },
+  "completed":true,
+  "gameTime":"4:10 PM",
+  "homeTeam":{
+    "finalScore":9,
+    "id":"los-angeles-dodgers",
+    "name":"Los Angeles Dodgers",
+    "score" : [
+    "0": 0,
+    "1": 2,
+    "2":0,
+    "3":0,
+    "4":1,
+    "5":0,
+    "6":0,
+    "7":6,
+    "8":-1
+    ]
+  },
+  "loser":"Cincinnati Reds",
+  "playString":"The Los Angeles Dodgers play the Cincinnati Reds at Dodger Stadium at 4:10 PM",
+  "resultString":"Los Angeles Dodgers won against the Cincinnati Reds with a final score of 9 to 7",
+  "stadium":"Dodger Stadium",
+  "winner": "Los Angeles Dodgers"
+};
 
 })();
